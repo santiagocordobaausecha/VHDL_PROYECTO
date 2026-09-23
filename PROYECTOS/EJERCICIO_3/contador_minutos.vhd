@@ -49,10 +49,7 @@ BEGIN
     -- Salidas combinacionales
     unidad_min <= std_logic_vector(minutos);
 
-    -- NOTA: esta senal queda disponible en el puerto pero
-    -- NO debe conectarse al habilitar_temporizador del nivel superior.
-    -- El fin real (9:59) se determina en temporizador.vhd
-    -- con fin_real usando bcd_min_unidad, bcd_seg_decena y bcd_seg_unidad.
+
     fin_cuenta <= '1' WHEN minutos = 9 ELSE '0';
 
 END logica;

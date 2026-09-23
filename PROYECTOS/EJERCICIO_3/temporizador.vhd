@@ -125,12 +125,10 @@ ARCHITECTURE Estructural OF temporizador IS
 
     -- fin_minutos: salida de contador_minutos (minuto=9).
     -- Se recibe pero NO se usa para detener el sistema.
-    -- El verdadero fin se calcula aqui con fin_real.
     SIGNAL fin_minutos : std_logic;
 
     -- fin_real: verdadero indicador de fin de conteo.
     -- Se activa SOLO cuando minutos=9, decenas_seg=5 y unidades_seg=9
-    -- Es decir, exactamente cuando el display muestra 9:59.
     SIGNAL fin_real : std_logic;
 
 BEGIN
@@ -145,9 +143,6 @@ BEGIN
 
     -- Calculo del verdadero fin de conteo: 9:59
     -- Las tres condiciones deben cumplirse simultaneamente:
-    --   bcd_min_unidad = "1001"  ->  minutos unidades = 9
-    --   bcd_seg_decena = "0101"  ->  segundos decenas = 5
-    --   bcd_seg_unidad = "1001"  ->  segundos unidades = 9
     fin_real <= '1' WHEN (bcd_min_unidad = "1001" AND bcd_seg_decena = "0101" AND bcd_seg_unidad = "1001") ELSE '0';
 
     -- Habilitar: el contador solo avanza si en_marcha='1' y no llego a 9:59
@@ -158,10 +153,7 @@ BEGIN
     -- =========================================================
 
     -- Divisor de frecuencia: 50 MHz -> 1 Hz
-    -- CORREGIDO: antes reinicio='0' fijo y sin habilitar, por lo que
-    -- corria desde el encendido de la placa sin importar en_marcha.
-    -- Ahora solo cuenta mientras en_marcha='1' (arranca en 00 con
-    -- 1 s completo) y se reinicia con reinicio_temporizador (pulsacion larga).
+
     INST_DIVISOR : divisor_frecuencia
         PORT MAP (
             reloj_50mhz => reloj_50mhz,
@@ -181,7 +173,7 @@ BEGIN
         );
 
     -- Contador de segundos: corre a 1 Hz
-    -- Se resetea con reinicio_temporizador (pulsacion larga del boton)
+    -- Se resetea con reinicio_temporizador 
     INST_SEGUNDOS : contador_segundos
         PORT MAP (
             reloj_1hz  => reloj_1hz,

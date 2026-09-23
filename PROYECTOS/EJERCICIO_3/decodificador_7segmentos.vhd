@@ -3,26 +3,9 @@
 -- Descripcion: Decodificador BCD a 7 segmentos.
 --              Verificado segmento por segmento en placa DE0.
 --
--- Mapeo confirmado en hardware:
---   segmentos(0) = a  (arriba)
---   segmentos(1) = b  (derecha arriba)
---   segmentos(2) = c  (derecha abajo)
---   segmentos(3) = d  (abajo)
---   segmentos(4) = e  (izquierda abajo)
---   segmentos(5) = f  (izquierda arriba)
---   segmentos(6) = g  (medio)
---
 -- Activo en bajo: '0' = encendido, '1' = apagado
 --
 -- Vector segmentos(6 DOWNTO 0) = "gfedcba"
---
---       a
---    f     b
---       g
---    e     c
---       d
---
--- Estilo: WITH-SELECT segun diapositivas del curso.
 -- =============================================================
 
 LIBRARY IEEE;
@@ -41,18 +24,6 @@ BEGIN
 
     -- segmentos = "gfedcba" (6 DOWNTO 0)
     -- '0' = encendido, '1' = apagado
-    --
-    --        g f e d c b a
-    --  0  →  1 0 0 0 0 0 0  = "1000000"  (a b c d e f)
-    --  1  →  1 1 1 1 0 0 1  = "1111001"  (b c)
-    --  2  →  0 1 0 0 1 0 0  = "0100100"  (a b d e g)
-    --  3  →  0 1 1 0 0 0 0  = "0110000"  (a b c d g)
-    --  4  →  0 0 1 1 0 0 1  = "0011001"  (b c f g)
-    --  5  →  0 0 1 0 0 1 0  = "0010010"  (a c d f g)
-    --  6  →  0 0 0 0 0 1 0  = "0000010"  (a c d e f g)
-    --  7  →  1 1 1 1 0 0 0  = "1111000"  (a b c)
-    --  8  →  0 0 0 0 0 0 0  = "0000000"  (todos)
-    --  9  →  0 0 1 0 0 0 0  = "0010000"  (a b c d f g)
 
     WITH bcd SELECT
         segmentos <= "1000000" WHEN "0000",   -- 0

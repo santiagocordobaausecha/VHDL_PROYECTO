@@ -12,12 +12,6 @@
 --      evaluar el boton.
 --      20 ms x 50,000,000 Hz = 1,000,000 ciclos (20 bits).
 --
--- Logica de deteccion (sobre boton_estable, no boton directo):
---   - Pulsacion corta : al soltar, contador_duracion < 100,000,000
---                       -> toggle de en_marcha (start/stop)
---   - Pulsacion larga : contador_duracion >= 100,000,000 (2 segundos)
---                       -> reinicio_temporizador = '1' (reset del timer)
---
 -- Entradas    : reloj_50mhz -> Reloj de 50 MHz de la FPGA
 --               boton       -> Boton unico (activo bajo en DE0)
 -- Salidas     : en_marcha            -> '1' = temporizador en marcha
@@ -40,7 +34,7 @@ END control_boton;
 ARCHITECTURE logica OF control_boton IS
 
     -- ----------------------------------------------------------
-    -- ANTIRREBOTE (DEBOUNCE)
+    -- ANTIRREBOTE 
     -- Filtro de 20 ms para eliminar rebotes del pulsador fisico.
     -- 20 ms a 50 MHz = 1,000,000 ciclos -> 20 bits (2^20 = 1,048,576)
     -- ----------------------------------------------------------
@@ -117,7 +111,7 @@ BEGIN
             IF boton_estable = '1' THEN
 
                 -- Incrementar contador de duracion
-                -- Solo si no alcanzo el maximo (evita overflow)
+                -- Solo si no alcanzo el maximo
                 IF contador_duracion < DOS_SEGUNDOS THEN
                     contador_duracion <= contador_duracion + 1;
                 END IF;

@@ -7,9 +7,6 @@
 -- Logica      : Contador que cuenta hasta 25,000,000 y luego
 --               invierte la salida. Esto genera un periodo de
 --               50,000,000 ciclos = 1 segundo (1 Hz).
---               Solo cuenta mientras habilitar='1' (en_marcha='1'),
---               asi el primer segundo despues de arrancar dura
---               1 s completo y no un tiempo al azar.
 --
 -- Entradas    : reloj_50mhz -> Reloj de 50 MHz de la FPGA
 --               reinicio    -> Reset asincrono activo alto (reinicio_temporizador)
